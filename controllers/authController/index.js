@@ -3,8 +3,6 @@ const bcrypt = require("bcrypt");
 
 const registerController = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
-
   const user = await User.findOne({ email });
   if (user) {
     return res.status(403).json({
@@ -22,7 +20,7 @@ const registerController = async (req, res) => {
     password: hashedPassword
   }).save();
 
-  res.json({
+  res.status(201).json({
     success: true,
     user: registeredUser
   });
