@@ -21,10 +21,13 @@ const initialize = passport => {
     }
   };
 
-  passport.use(new LocalStrategy({ usernameField: "email" }), authenticateUser);
+  passport.use(new LocalStrategy({ usernameField: "email" }, authenticateUser));
 
   passport.serializeUser((user, done) => done(null, user._id));
-  passport.deserializeUser(async (id, done) => await User.findById(id));
+  passport.deserializeUser(async (id, done) => {
+    const user = await User.findById(id).select("-password");
+    return done(null, user);
+  });
 };
 
 module.exports = initialize;
