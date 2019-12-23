@@ -1,50 +1,54 @@
 const User = require("../../models/User");
-const bcrypt = require("bcrypt");
-const passport = require("../../passport-config");
+const firebase = require("../../firebase");
 
-const registerController = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (user) {
-    return res.status(403).json({
-      success: false,
-      error: {
-        message: "Email already registered"
-      }
-    });
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 12);
-
-  const registeredUser = await new User({
-    email,
-    password: hashedPassword
-  }).save();
-
-  res.status(201).json({
-    success: true,
-    user: registeredUser
-  });
-};
-
-const loginController = (req, res) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.redirect("/login");
-    }
-    req.logIn(user, function(err) {
-      if (err) {
-        return next(err);
-      }
-      return res.json({
+const authStatusController = (req, res) => {
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      res.status(200).json({
         success: true,
         user
       });
-    });
-  })(req, res, next);
+    } else {
+      res.status(404).json({
+        success: false,
+        error: "No user found"
+      });
+    }
+  });
 };
 
-module.exports = { registerController, loginController };
+const registerController = async (req, res) => {
+  const { email, password } = req.body;
+
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then(user => {
+      res.json({
+        success: true,
+        user
+      });
+    })
+    .catch(err => {
+      return res.status(500).json(err);
+    });
+};
+
+const loginController = (req, res) => {
+  const { email, password } = req.body;
+
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then(user => {
+      res.json({
+        success: true,
+        user
+      });
+    })
+    .catch(err => {
+      return res.status(500).json(err);
+    });
+};
+
+module.exports = { registerController, loginController, authStatusController };
