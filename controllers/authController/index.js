@@ -1,20 +1,17 @@
-const User = require("../../models/User");
 const firebase = require("../../firebase");
 
 const authStatusController = (req, res) => {
-  firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-      res.status(200).json({
-        success: true,
-        user
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        error: "No user found"
-      });
-    }
-  });
+  const user = firebase.auth().currentUser;
+  if (user) {
+    res.json({
+      success: true,
+      user
+    });
+  } else {
+    res.json({
+      success: false
+    });
+  }
 };
 
 const registerController = async (req, res) => {

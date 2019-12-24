@@ -4,7 +4,7 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const { authRouter } = require("./routes");
+const { authRouter, profileRouter } = require("./routes");
 
 mongoose
   .connect(
@@ -22,6 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api/auth", authRouter);
+app.use("/api/profile", profileRouter);
 
 const PORT = process.env.PORT || 8888;
 
