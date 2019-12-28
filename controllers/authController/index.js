@@ -1,19 +1,5 @@
 const firebase = require("../../firebase");
 
-const authStatusController = (req, res) => {
-  const user = firebase.auth().currentUser;
-  if (user) {
-    res.json({
-      success: true,
-      user
-    });
-  } else {
-    res.json({
-      success: false
-    });
-  }
-};
-
 const registerController = async (req, res) => {
   const { email, password } = req.body;
 
@@ -48,4 +34,4 @@ const loginController = (req, res) => {
     });
 };
 
-module.exports = { registerController, loginController, authStatusController };
+module.exports = { registerController, loginController };
