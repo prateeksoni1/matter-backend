@@ -34,4 +34,21 @@ const loginController = (req, res) => {
     });
 };
 
-module.exports = { registerController, loginController };
+const logoutController = (req, res) => {
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      res.json({
+        success: true
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        success: false,
+        error: err
+      });
+    });
+};
+
+module.exports = { registerController, loginController, logoutController };
