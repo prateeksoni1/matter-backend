@@ -30,8 +30,9 @@ const getProfileController = async (req, res) => {
 };
 
 const createProfileController = async (req, res) => {
-  const { uid, name, email, username, organizationName } = req.body;
-  const profile = await ProfileCollection.findOne({ uid });
+  const { name, email, username, organizationName } = req.body;
+  const user = firebase.auth().currentUser;
+  const profile = await ProfileCollection.findOne({ uid: user.uid });
   if (profile) {
     return res.json({
       success: false,
@@ -41,7 +42,7 @@ const createProfileController = async (req, res) => {
     });
   } else {
     let newProfile = {
-      uid,
+      uid: user.uid,
       name,
       email,
       username
