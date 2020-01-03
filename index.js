@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/auth", authRouter);
 app.use("/api/profile", profileRouter);
 
-const PORT = process.env.PORT || 8888;
+const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

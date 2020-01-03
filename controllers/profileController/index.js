@@ -1,4 +1,4 @@
-const Profile = require("../../models/ProfileSchema");
+const Profile = require("../../models/Profile");
 const firebase = require("../../firebase");
 
 const getProfileController = async (req, res) => {
@@ -28,9 +28,9 @@ const getProfileController = async (req, res) => {
 };
 
 const createProfileController = async (req, res) => {
-  const { name, email, username, organizationName } = req.body;
+  const { name, email, username } = req.body;
   const user = firebase.auth().currentUser;
-  const profile = await ProfileCollection.findOne({ uid: user.uid });
+  const profile = await Profile.findOne({ uid: user.uid });
   if (profile) {
     return res.json({
       success: false,

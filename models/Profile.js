@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
-const ProjectSchema = require("./ProjectSchema").schema;
+const { Schema } = mongoose;
+const Project = require("./Project").schema;
 
-const ProfileSchema = mongoose.Schema({
+const ProfileSchema = new Schema();
+
+ProfileSchema.add({
   uid: {
     type: String,
     required: true
@@ -27,10 +30,10 @@ const ProfileSchema = mongoose.Schema({
     match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
   },
   projects: {
-    type: [ProjectSchema],
+    type: [Project],
     required: true,
     default: []
   }
 });
 
-module.exports = mongoose.model("profile", ProfileSchema);
+module.exports = Profile = mongoose.model("profile", ProfileSchema);

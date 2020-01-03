@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
-const ProjectContributorSchema = require("./ProjectContributorSchema").schema;
-const VersionSchema = require("./VersionSchema").schema;
-const TaskSchema = require("./TaskSchema").schema;
+const { Schema } = mongoose;
+const ProjectContributorSchema = require("./ProjectContributor").schema;
+const VersionSchema = require("./Version").schema;
+const Task = require("./Task").schema;
 
-const ProjectSchema = mongoose.Schema({
+const ProjectSchema = new Schema();
+
+ProjectSchema.add({
   projectName: {
     type: String,
     required: true
@@ -16,11 +19,11 @@ const ProjectSchema = mongoose.Schema({
   startedOn: {
     type: Date,
     required: true,
-    default: Date.now
+    default: Date.now()
   },
   lastUpdatedOn: {
     type: Date,
-    default: Date.now
+    default: Date.now()
   },
   completedOn: Date,
   isCompleted: {
@@ -31,15 +34,15 @@ const ProjectSchema = mongoose.Schema({
   developmentVersion: VersionSchema,
   productionVersion: VersionSchema,
   features: {
-    type: [TaskSchema],
+    type: [Task],
     required: true,
     default: []
   },
   bugs: {
-    type: [TaskSchema],
+    type: [Task],
     required: true,
     default: []
   }
 });
 
-module.exports = mongoose.model("project", ProjectSchema);
+module.exports = Project = mongoose.model("project", ProjectSchema);
