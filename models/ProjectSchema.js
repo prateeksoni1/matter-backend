@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const ProfileSchema = require("./ProfileSchema").schema;
+const ProjectContributorSchema = require("./ProjectContributorSchema").schema;
+const VersionSchema = require("./VersionSchema").schema;
+const TaskSchema = require("./TaskSchema").schema;
 
 const ProjectSchema = mongoose.Schema({
   projectName: {
@@ -7,14 +9,18 @@ const ProjectSchema = mongoose.Schema({
     required: true
   },
   contributors: {
-    type: [ProfileSchema],
+    type: [ProjectContributorSchema],
     required: true,
     default: []
   },
   startedOn: {
     type: Date,
     required: true,
-    default: Date.now()
+    default: Date.now
+  },
+  lastUpdatedOn: {
+    type: Date,
+    default: Date.now
   },
   completedOn: Date,
   isCompleted: {

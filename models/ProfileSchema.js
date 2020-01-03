@@ -30,20 +30,7 @@ const ProfileSchema = mongoose.Schema({
     type: [ProjectSchema],
     required: true,
     default: []
-  },
-  roles: [
-    {
-      project: {
-        type: mongoose.Types.ObjectId,
-        required: true,
-        ref: "project"
-      },
-      role: {
-        type: String,
-        required: true
-      }
-    }
-  ]
+  }
 });
 
 module.exports = mongoose.model("profile", ProfileSchema);
