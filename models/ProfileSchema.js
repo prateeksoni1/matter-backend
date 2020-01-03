@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const ProjectSchema = require("./ProjectSchema").schema;
 
-const ProfileEmployerSchema = mongoose.Schema({
+const ProfileSchema = mongoose.Schema({
   uid: {
     type: String,
     required: true
@@ -25,18 +26,24 @@ const ProfileEmployerSchema = mongoose.Schema({
     trim: true,
     match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
   },
-  organizationName: {
-    type: String,
-    required: true
+  projects: {
+    type: [ProjectSchema],
+    required: true,
+    default: []
   },
-  type: {
-    type: String,
-    default: "EMPLOYER"
-  }
+  roles: [
+    {
+      project: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "project"
+      },
+      role: {
+        type: String,
+        required: true
+      }
+    }
+  ]
 });
 
-module.exports = mongoose.model(
-  "profileEmployer",
-  ProfileEmployerSchema,
-  "profiles"
-);
+module.exports = mongoose.model("profile", ProfileSchema);
