@@ -1,6 +1,4 @@
-const ProfileUser = require("../../models/ProfileUser");
-const ProfileEmployer = require("../../models/ProfileEmployer");
-const ProfileCollection = require("../../models/ProfileUser").collection;
+const Profile = require("../../models/ProfileSchema");
 const firebase = require("../../firebase");
 
 const getProfileController = async (req, res) => {
@@ -13,7 +11,7 @@ const getProfileController = async (req, res) => {
       }
     });
   }
-  const profile = await ProfileCollection.findOne({ uid: user.uid });
+  const profile = await Profile.findOne({ uid: user.uid });
   if (!profile) {
     res.json({
       success: false,
@@ -41,23 +39,16 @@ const createProfileController = async (req, res) => {
       }
     });
   } else {
-    let newProfile = {
+    const newProfile = new Profile({
       uid: user.uid,
       name,
       email,
       username
-    };
-    let createdProfile = null;
-    if (!organizationName) {
-      createdProfile = new ProfileUser(newProfile);
-    } else {
-      newProfile.organizationName = organizationName;
-      createdProfile = new ProfileEmployer(newProfile);
-    }
-    await createdProfile.save();
+    });
+    await newProfile.save();
     res.status(201).json({
       success: true,
-      profile: createdProfile
+      profile: newProfile
     });
   }
 };
