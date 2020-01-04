@@ -33,16 +33,20 @@ ProjectSchema.add({
   },
   developmentVersion: VersionSchema,
   productionVersion: VersionSchema,
-  features: {
-    type: [Task],
-    required: true,
-    default: []
-  },
-  bugs: {
-    type: [Task],
-    required: true,
-    default: []
-  }
+  features: [
+    {
+      type: [Task],
+      required: true,
+      default: []
+    }
+  ],
+  bugs: [
+    {
+      type: [Task],
+      required: true,
+      default: []
+    }
+  ]
 });
 
 module.exports = Project = mongoose.model("project", ProjectSchema);
