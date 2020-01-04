@@ -2,11 +2,12 @@ const router = require("express").Router();
 const {
   registerController,
   loginController,
-  logoutController
+  logoutController,
+  checkAuthStatusController
 } = require("../../controllers/authController");
 
-router.post("/register", registerController);
+router.post("/signup", registerController);
 router.post("/login", loginController);
-router.get("/logout", logoutController);
+router.get("/logout", checkAuthStatusController, logoutController);
 
 module.exports = router;

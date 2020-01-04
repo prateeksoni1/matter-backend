@@ -1,5 +1,14 @@
 const firebase = require("../../firebase");
 
+const checkAuthStatusController = async (req, res, next) => {
+  const user = firebase.auth().currentUser;
+  if (user) return next();
+  return res.status(403).json({
+    success: false,
+    message: "No user logged in"
+  });
+};
+
 const registerController = async (req, res) => {
   const { email, password } = req.body;
 
@@ -51,4 +60,9 @@ const logoutController = (req, res) => {
     });
 };
 
-module.exports = { registerController, loginController, logoutController };
+module.exports = {
+  registerController,
+  loginController,
+  logoutController,
+  checkAuthStatusController
+};

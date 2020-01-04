@@ -1,6 +1,28 @@
 const Profile = require("../../models/Profile");
 const firebase = require("../../firebase");
 
+const getProfileByUsernameController = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const profile = await Profile.findOne({ username });
+    if (profile) {
+      return res.json({
+        success: true,
+        profile
+      });
+    }
+
+    return res.json({
+      success: false
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err
+    });
+  }
+};
+
 const getProfileController = async (req, res) => {
   const user = firebase.auth().currentUser;
   if (!user) {
@@ -53,4 +75,8 @@ const createProfileController = async (req, res) => {
   }
 };
 
-module.exports = { getProfileController, createProfileController };
+module.exports = {
+  getProfileController,
+  createProfileController,
+  getProfileByUsernameController
+};
