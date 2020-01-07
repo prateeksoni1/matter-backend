@@ -25,12 +25,16 @@ const getProfileByUsernameController = async (req, res) => {
 
 const getProfilesController = async (req, res) => {
   console.log("here");
-  const { search } = req.params;
+  const { search } = req.query;
   try {
     let profiles = [];
     if (search) {
       profiles = await Profile.find({
-        $or: [{ name: search }, { username: search }, { email: search }]
+        $or: [
+          { name: { $regex: search } },
+          { username: { $regex: search } },
+          { email: { $regex: search } }
+        ]
       });
     } else {
       profiles = await Profile.find();
