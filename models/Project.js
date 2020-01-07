@@ -11,6 +11,7 @@ ProjectSchema.add({
     type: String,
     required: true
   },
+  description: String,
   contributors: {
     type: [ProjectContributorSchema],
     required: true,

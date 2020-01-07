@@ -23,6 +23,32 @@ const getProfileByUsernameController = async (req, res) => {
   }
 };
 
+const getProfilesController = async (req, res) => {
+  console.log("here");
+  const { search } = req.params;
+  try {
+    let profiles = [];
+    if (search) {
+      profiles = await Profile.find({
+        $or: [{ name: search }, { username: search }, { email: search }]
+      });
+    } else {
+      profiles = await Profile.find();
+    }
+    console.log(profiles);
+
+    return res.json({
+      success: true,
+      profiles
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false
+    });
+  }
+};
+
 const getProfileController = async (req, res) => {
   const user = firebase.auth().currentUser;
   if (!user) {
@@ -78,5 +104,6 @@ const createProfileController = async (req, res) => {
 module.exports = {
   getProfileController,
   createProfileController,
-  getProfileByUsernameController
+  getProfileByUsernameController,
+  getProfilesController
 };
