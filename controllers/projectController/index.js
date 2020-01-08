@@ -28,10 +28,11 @@ const createProjectController = async (req, res) => {
 const getProjectsById = async (req, res) => {
   const { id } = req.params;
   try {
-    const projects = await Profile.findById(id).projects;
+    const profile = await Profile.findById(id);
+    console.log(profile);
     return res.json({
       success: true,
-      projects
+      projects: profile.projects
     });
   } catch (err) {
     return res.status(500).json({
