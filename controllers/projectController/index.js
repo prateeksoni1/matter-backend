@@ -29,7 +29,6 @@ const getProjectsById = async (req, res) => {
   const { id } = req.params;
   try {
     const profile = await Profile.findById(id);
-    console.log(profile);
     return res.json({
       success: true,
       projects: profile.projects
