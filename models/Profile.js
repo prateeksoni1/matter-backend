@@ -30,7 +30,12 @@ ProfileSchema.add({
     match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
   },
   projects: {
-    type: [Project],
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "project"
+      }
+    ],
     required: true,
     default: []
   }

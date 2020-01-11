@@ -16,24 +16,20 @@ TaskSchema.add({
   },
   testCases: [
     {
-      testCase: Schema.Types.ObjectId,
-      ref: "testCases"
+      type: Schema.Types.ObjectId,
+      ref: "testCase"
     }
   ],
   assignedTo: [
     {
-      profile: {
-        type: Schema.Types.ObjectId,
-        ref: "profiles"
-      }
+      type: Schema.Types.ObjectId,
+      ref: "profile"
     }
   ],
   assignedBy: [
     {
-      profile: {
-        type: Schema.Types.ObjectId,
-        ref: "profiles"
-      }
+      type: Schema.Types.ObjectId,
+      ref: "profile"
     }
   ],
   startedOn: {

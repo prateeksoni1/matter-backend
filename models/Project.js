@@ -15,10 +15,8 @@ ProjectSchema.add({
   contributors: {
     type: [
       {
-        profile: {
-          type: Schema.Types.ObjectId,
-          ref: "profiles"
-        }
+        type: Schema.Types.ObjectId,
+        ref: "projectContributor"
       }
     ],
     required: true,
@@ -41,17 +39,17 @@ ProjectSchema.add({
   },
   developmentVersion: {
     type: Schema.Types.ObjectId,
-    ref: "versions"
+    ref: "version"
   },
   productionVersion: {
     type: Schema.Types.ObjectId,
-    ref: "versions"
+    ref: "version"
   },
   features: {
     type: [
       {
-        task: Schema.Types.ObjectId,
-        ref: "tasks"
+        type: Schema.Types.ObjectId,
+        ref: "task"
       }
     ],
     required: true,
@@ -60,8 +58,8 @@ ProjectSchema.add({
   bugs: {
     type: [
       {
-        task: Schema.Types.ObjectId,
-        ref: "tasks"
+        type: Schema.Types.ObjectId,
+        ref: "task"
       }
     ],
     required: true,

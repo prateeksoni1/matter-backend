@@ -39,7 +39,6 @@ const getProfilesController = async (req, res) => {
     } else {
       profiles = await Profile.find();
     }
-    console.log(profiles);
 
     return res.json({
       success: true,
@@ -63,7 +62,7 @@ const getProfileController = async (req, res) => {
       }
     });
   }
-  const profile = await Profile.findOne({ uid: user.uid });
+  const profile = await Profile.findOne({ uid: user.uid }).populate("projects");
   if (!profile) {
     res.json({
       success: false,
