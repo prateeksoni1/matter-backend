@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const ProjectContributor = require("./ProjectContributor").schema;
+const Profile = require("./Profile").schema;
 const TestCase = require("./TestCase").schema;
 
 const TaskSchema = new Schema();
@@ -14,9 +14,28 @@ TaskSchema.add({
     type: String,
     required: true
   },
-  testCases: [TestCase],
-  assignedTo: [ProjectContributor],
-  assignedBy: [ProjectContributor],
+  testCases: [
+    {
+      testCase: Schema.Types.ObjectId,
+      ref: "testCases"
+    }
+  ],
+  assignedTo: [
+    {
+      profile: {
+        type: Schema.Types.ObjectId,
+        ref: "profiles"
+      }
+    }
+  ],
+  assignedBy: [
+    {
+      profile: {
+        type: Schema.Types.ObjectId,
+        ref: "profiles"
+      }
+    }
+  ],
   startedOn: {
     type: Date,
     required: true,

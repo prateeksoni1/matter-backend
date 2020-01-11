@@ -13,7 +13,14 @@ ProjectSchema.add({
   },
   description: String,
   contributors: {
-    type: [ProjectContributorSchema],
+    type: [
+      {
+        profile: {
+          type: Schema.Types.ObjectId,
+          ref: "profiles"
+        }
+      }
+    ],
     required: true,
     default: []
   },
@@ -32,15 +39,31 @@ ProjectSchema.add({
     required: true,
     default: false
   },
-  developmentVersion: VersionSchema,
-  productionVersion: VersionSchema,
+  developmentVersion: {
+    type: Schema.Types.ObjectId,
+    ref: "versions"
+  },
+  productionVersion: {
+    type: Schema.Types.ObjectId,
+    ref: "versions"
+  },
   features: {
-    type: [Task],
+    type: [
+      {
+        task: Schema.Types.ObjectId,
+        ref: "tasks"
+      }
+    ],
     required: true,
     default: []
   },
   bugs: {
-    type: [Task],
+    type: [
+      {
+        task: Schema.Types.ObjectId,
+        ref: "tasks"
+      }
+    ],
     required: true,
     default: []
   }
