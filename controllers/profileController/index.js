@@ -62,7 +62,10 @@ const getProfileController = async (req, res) => {
       }
     });
   }
-  const profile = await Profile.findOne({ uid: user.uid }).populate("projects");
+  const profile = await Profile.findOne({ uid: user.uid }).populate({
+    path: "projects",
+    populate: { path: "contributors", populate: "profile" }
+  });
   if (!profile) {
     res.json({
       success: false,

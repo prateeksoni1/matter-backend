@@ -14,6 +14,10 @@ TaskSchema.add({
     type: String,
     required: true
   },
+  type: {
+    type: String,
+    required: true
+  },
   testCases: [
     {
       type: Schema.Types.ObjectId,
@@ -26,12 +30,10 @@ TaskSchema.add({
       ref: "profile"
     }
   ],
-  assignedBy: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "profile"
-    }
-  ],
+  assignedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "profile"
+  },
   startedOn: {
     type: Date,
     required: true,
