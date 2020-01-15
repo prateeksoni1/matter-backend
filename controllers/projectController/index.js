@@ -5,12 +5,12 @@ const Contributor = require("../../models/ProjectContributor");
 const Task = require("../../models/Task");
 
 const addTaskController = async (req, res) => {
-  const user = firebase.auth().currentUser;
   const {
     title,
     description,
     type,
     assignedTo,
+    assignedBy,
     priority,
     testCases,
     projectId
@@ -22,7 +22,7 @@ const addTaskController = async (req, res) => {
       description,
       type,
       assignedTo,
-      assignedBy: user._id,
+      assignedBy,
       priority,
       testCases
     });
@@ -45,8 +45,24 @@ const addTaskController = async (req, res) => {
   }
 };
 
+const editTaskController = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const task = await Task.updateOne({ _id: id }, req.body);
+    return res.json({
+      success: true,
+      task
+    });
+  } catch (err) {
+    return res.json({
+      success: false,
+      error: err
+    });
+  }
+};
+
 const getTasks = async (req, res) => {
-  const { projectId } = req.params;
+  const { projectId, type } = req.query;
   try {
     const project = await Project.findById(projectId).populate({
       path: `${type}s`,
@@ -55,10 +71,12 @@ const getTasks = async (req, res) => {
           path: "testCases"
         },
         {
-          path: "assignedTo"
+          path: "assignedTo",
+          populate: "profile"
         },
         {
-          path: "assignedBy"
+          path: "assignedBy",
+          populate: "profile"
         }
       ]
     });
@@ -68,6 +86,7 @@ const getTasks = async (req, res) => {
       [`${type}s`]: tasks
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       error: err
@@ -161,5 +180,6 @@ module.exports = {
   getProjectsById,
   getProjectByName,
   addTaskController,
-  getTasks
+  getTasks,
+  editTaskController
 };

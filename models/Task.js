@@ -27,12 +27,12 @@ TaskSchema.add({
   assignedTo: [
     {
       type: Schema.Types.ObjectId,
-      ref: "profile"
+      ref: "projectContributor"
     }
   ],
   assignedBy: {
     type: Schema.Types.ObjectId,
-    ref: "profile"
+    ref: "projectContributor"
   },
   startedOn: {
     type: Date,
