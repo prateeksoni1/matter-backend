@@ -5,6 +5,7 @@ const Contributor = require("../../models/ProjectContributor");
 const Task = require("../../models/Task");
 
 const addTaskController = async (req, res) => {
+  const { uid } = firebase.auth().currentUser;
   const {
     title,
     description,
@@ -17,6 +18,9 @@ const addTaskController = async (req, res) => {
   } = req.body;
 
   try {
+    const profile = Profile.findOne({ uid });
+    if (!profile.permissions.includes("create-task")) {
+    }
     const task = new Task({
       title,
       description,

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const Project = require("./Project").schema;
 
 const ProfileSchema = new Schema();
 
@@ -38,7 +37,15 @@ ProfileSchema.add({
     ],
     required: true,
     default: []
+  },
+  isOwner: {
+    type: Boolean,
+    default: false
+  },
+  organization: {
+    type: mongoose.Types.ObjectId,
+    ref: "organization"
   }
 });
 
-module.exports = Profile = mongoose.model("profile", ProfileSchema);
+module.exports = Profile = mongoose.model("profile", ProfileSchema, "profiles");

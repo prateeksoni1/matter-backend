@@ -24,7 +24,6 @@ const getProfileByUsernameController = async (req, res) => {
 };
 
 const getProfilesController = async (req, res) => {
-  console.log("here");
   const { search } = req.query;
   try {
     let profiles = [];
@@ -82,7 +81,7 @@ const getProfileController = async (req, res) => {
 };
 
 const createProfileController = async (req, res) => {
-  const { name, email, username } = req.body;
+  const { name, email, username, isOwner, organization } = req.body;
   const user = firebase.auth().currentUser;
   const profile = await Profile.findOne({ uid: user.uid });
   if (profile) {
@@ -93,12 +92,18 @@ const createProfileController = async (req, res) => {
       }
     });
   } else {
-    const newProfile = new Profile({
+    const profileData = {
       uid: user.uid,
       name,
       email,
-      username
-    });
+      username,
+      isOwner
+    };
+
+    if (isOwner) {
+      profileData["organization"] = organization;
+    }
+    const newProfile = new Profile(profileData);
     await newProfile.save();
     res.status(201).json({
       success: true,
