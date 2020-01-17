@@ -5,4 +5,6 @@ const {
 } = require("../../controllers/organizationController");
 
 router.get("/", getOrganizations);
-router.get("/", createOrganization);
+router.post("/", createOrganization);
+
+module.exports = router;

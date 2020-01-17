@@ -97,12 +97,10 @@ const createProfileController = async (req, res) => {
       name,
       email,
       username,
-      isOwner
+      isOwner,
+      organization
     };
 
-    if (isOwner) {
-      profileData["organization"] = organization;
-    }
     const newProfile = new Profile(profileData);
     await newProfile.save();
     res.status(201).json({
