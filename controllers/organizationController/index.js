@@ -37,7 +37,7 @@ const createOrganization = async (req, res) => {
 
 const getOrganizations = async (req, res) => {
   const { search } = req.query;
-  const organizations = [];
+  let organizations = [];
   try {
     if (search) {
       organizations = await Organization.find({ name: { $regex: search } });
@@ -49,6 +49,7 @@ const getOrganizations = async (req, res) => {
       organizations
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       error: err
