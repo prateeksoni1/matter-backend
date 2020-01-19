@@ -1,16 +1,9 @@
 const firebase = require("../../firebase");
 const Organization = require("../../models/Organization");
+const Profile = require("../../models/Profile");
 
 const createOrganization = async (req, res) => {
-  const { isOwner } = firebase.auth().currentUser;
-  if (!isOwner) {
-    return res.status(401).json({
-      success: "false",
-      message: "User unauthorized"
-    });
-  }
-
-  const { name, permissions } = req.body;
+  const { name, permissionMatrix } = req.body;
 
   const existingOrganization = await Organization.findOne({ name });
 
@@ -23,7 +16,7 @@ const createOrganization = async (req, res) => {
 
   const organization = new Organization({
     name,
-    permissions
+    permissionMatrix
   });
 
   await organization.save();
