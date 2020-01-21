@@ -18,12 +18,16 @@ const {
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
+    cookie: {
+      secure: false
+    },
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     resave: true,
     saveUninitialized: true
   })
 );
 
+app.use(cors({ credentials: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -39,7 +43,6 @@ mongoose
     console.log(err);
   });
 
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api/auth", authRouter);

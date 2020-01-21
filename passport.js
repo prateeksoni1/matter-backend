@@ -4,12 +4,15 @@ const User = require("./models/User");
 
 module.exports = passport => {
   passport.serializeUser((user, done) => {
+    // console.log(user);
     return done(null, user._id);
   });
 
   passport.deserializeUser(async (id, done) => {
+    console.log("here");
     try {
       const user = await User.findById(id);
+      console.log(user);
       if (!user) {
         return done(null, false);
       }

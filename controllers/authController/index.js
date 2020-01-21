@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
 
 const checkAuthStatusController = async (req, res, next) => {
+  console.log(req.isAuthenticated(), req.user);
   if (req.isAuthenticated()) return next();
   return res.status(403).json({
     success: false,
@@ -44,7 +45,9 @@ const loginController = (req, res, next) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     req.logIn(user, err => {
+      console.log("48: ", user, err);
       if (err) return res.status(500).json({ success: false, error: err });
+      console.log("50: ", req.isAuthenticated());
       return res.status(200).json({
         success: true,
         user

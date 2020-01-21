@@ -61,7 +61,7 @@ const getProfileController = async (req, res) => {
     res.json({
       success: false,
       error: {
-        message: "No profle found"
+        message: "No profile found"
       }
     });
   } else {
@@ -84,7 +84,6 @@ const createProfileController = async (req, res) => {
     });
   } else {
     const profileData = {
-      uid: user.uid,
       name,
       email,
       username,
