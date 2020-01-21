@@ -4,10 +4,6 @@ const { Schema } = mongoose;
 const ProfileSchema = new Schema();
 
 ProfileSchema.add({
-  uid: {
-    type: String,
-    required: true
-  },
   name: {
     type: String,
     required: true,
@@ -20,13 +16,6 @@ ProfileSchema.add({
     minLength: 5,
     trim: true,
     lowercase: true
-  },
-  email: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true,
-    match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
   },
   projects: {
     type: [

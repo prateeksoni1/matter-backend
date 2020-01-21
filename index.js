@@ -3,6 +3,10 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const passport = require("passport");
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
+require("./passport")(passport);
 
 const {
   authRouter,
@@ -10,6 +14,18 @@ const {
   projectRouter,
   organizationRouter
 } = require("./routes");
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 mongoose
   .connect(

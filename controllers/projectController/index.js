@@ -5,7 +5,6 @@ const Contributor = require("../../models/ProjectContributor");
 const Task = require("../../models/Task");
 
 const addTaskController = async (req, res) => {
-  const { uid } = firebase.auth().currentUser;
   const {
     title,
     description,
@@ -18,7 +17,7 @@ const addTaskController = async (req, res) => {
   } = req.body;
 
   try {
-    const profile = Profile.findOne({ uid });
+    const profile = Profile.findById(req.user.profile);
     if (!profile.permissions.includes("create-task")) {
     }
     const task = new Task({
@@ -99,7 +98,6 @@ const getTasks = async (req, res) => {
 };
 
 const createProjectController = async (req, res) => {
-  const user = firebase.auth().currentUser;
   const { projectName, description, contributors } = req.body;
 
   try {
@@ -118,7 +116,7 @@ const createProjectController = async (req, res) => {
     });
     await project.save();
 
-    const profile = await Profile.findOne({ uid: user.uid });
+    const profile = await Profile.findById(req.user.profile);
     profile.projects.push(project._id);
     profile.save();
 
@@ -144,7 +142,6 @@ const getProjectsById = async (req, res) => {
         populate: "profile"
       }
     });
-    console.log(profile);
     return res.json({
       success: true,
       projects: profile.projects

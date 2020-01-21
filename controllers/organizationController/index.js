@@ -1,6 +1,4 @@
-const firebase = require("../../firebase");
 const Organization = require("../../models/Organization");
-const Profile = require("../../models/Profile");
 
 const createOrganization = async (req, res) => {
   const { name, permissionMatrix } = req.body;

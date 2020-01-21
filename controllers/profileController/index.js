@@ -52,19 +52,11 @@ const getProfilesController = async (req, res) => {
 };
 
 const getProfileController = async (req, res) => {
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    return res.json({
-      success: false,
-      error: {
-        message: "No user logged in"
-      }
-    });
-  }
-  const profile = await Profile.findOne({ uid: user.uid }).populate({
+  const profile = await Profile.findById(req.user.profile).populate({
     path: "projects",
     populate: { path: "contributors", populate: "profile" }
   });
+
   if (!profile) {
     res.json({
       success: false,
@@ -82,8 +74,7 @@ const getProfileController = async (req, res) => {
 
 const createProfileController = async (req, res) => {
   const { name, email, username, isOwner, organization } = req.body;
-  const user = firebase.auth().currentUser;
-  const profile = await Profile.findOne({ uid: user.uid });
+  const profile = await Profile.findById(req.user.profile);
   if (profile) {
     return res.json({
       success: false,
