@@ -1,5 +1,5 @@
 const Profile = require("../../models/Profile");
-const firebase = require("../../firebase");
+const User = require("../../models/User");
 
 const getProfileByUsernameController = async (req, res) => {
   const { username } = req.params;
@@ -94,6 +94,9 @@ const createProfileController = async (req, res) => {
 
     const newProfile = new Profile(profileData);
     await newProfile.save();
+    const user = await User.findById(req.user._id);
+    user.profile = newProfile._id;
+    await user.save();
     res.status(201).json({
       success: true,
       profile: newProfile
