@@ -3,7 +3,6 @@ const Project = require("../../models/Project");
 const Profile = require("../../models/Profile");
 const Contributor = require("../../models/ProjectContributor");
 const Task = require("../../models/Task");
-const User = require("../../models/User");
 
 const addTaskController = async (req, res) => {
   const {
@@ -18,26 +17,7 @@ const addTaskController = async (req, res) => {
   } = req.body;
 
   try {
-    const profile = Profile.findById(req.user.profile).populate("organization");
-
-    const { permissionMatrix } = profile.organization;
-
-    const project = await Project.findById(projectId).populate({
-      path: "contributors"
-    });
-
-    const { contributors } = project;
-    const { role } = contributors.find(
-      contributor => contributor.profile === req.user.profile
-    );
-    const { permissions } = permissionMatrix.find(item => item.role === role);
-
-    if (!permissions.includes("create-task")) {
-      return res.status(403).json({
-        success: false,
-        message: `User don't have enough permissions`
-      });
-    }
+    const project = await Project.findById(projectId);
 
     const task = new Task({
       title,
