@@ -12,7 +12,8 @@ const {
   authRouter,
   profileRouter,
   projectRouter,
-  organizationRouter
+  organizationRouter,
+  permissionsRouter
 } = require("./routes");
 
 app.use(
@@ -49,6 +50,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/project", projectRouter);
 app.use("/api/organization", organizationRouter);
+app.use("/api/permissions", permissionsRouter);
 
 const PORT = process.env.PORT || 8000;
 
