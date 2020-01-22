@@ -100,7 +100,7 @@ const createProjectController = async (req, res) => {
 
   try {
     const contributorIds = [];
-    contributors.map(contributor => {
+    contributors.forEach(contributor => {
       const newContributor = new Contributor({
         ...contributor
       });
@@ -113,6 +113,11 @@ const createProjectController = async (req, res) => {
       contributors: contributorIds
     });
     await project.save();
+    contributors.forEach(async contributor => {
+      const contributorProfile = await Profile.findById(contributor.profile);
+      contributorProfile.projects.push(project._id);
+      await contributorProfile.save();
+    });
 
     const profile = await Profile.findById(req.user.profile);
     profile.projects.push(project._id);
