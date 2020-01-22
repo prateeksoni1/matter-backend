@@ -119,10 +119,6 @@ const createProjectController = async (req, res) => {
       await contributorProfile.save();
     });
 
-    const profile = await Profile.findById(req.user.profile);
-    profile.projects.push(project._id);
-    profile.save();
-
     return res.json({
       success: true,
       project
