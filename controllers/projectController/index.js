@@ -20,7 +20,7 @@ const addTaskController = async (req, res) => {
   try {
     const profile = Profile.findById(req.user.profile).populate("organization");
 
-    const { permissionMatrix } = user.profile.organization;
+    const { permissionMatrix } = profile.organization;
 
     const project = await Project.findById(projectId).populate({
       path: "contributors"
