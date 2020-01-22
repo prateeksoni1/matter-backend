@@ -12,12 +12,7 @@ const {
 } = require("../../controllers/projectController");
 const { checkPermissions } = require("../../controllers/permissionController");
 
-router.post(
-  "/",
-  checkAuthStatusController,
-  checkPermissions("create-project"),
-  createProjectController
-);
+router.post("/", checkAuthStatusController, createProjectController);
 router.post(
   "/task",
   checkAuthStatusController,

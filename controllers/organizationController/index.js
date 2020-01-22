@@ -1,4 +1,25 @@
 const Organization = require("../../models/Organization");
+const Profile = require("../../models/Profile");
+
+const getRoles = async (req, res) => {
+  try {
+    const { organization } = await Profile.findById(req.user.profile).populate(
+      "organization"
+    );
+    const { permissionMatrix } = organization;
+    const roles = permissionMatrix.map(item => item.role);
+    return res.json({
+      success: true,
+      roles
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    });
+  }
+};
 
 const createOrganization = async (req, res) => {
   const { name, permissionMatrix } = req.body;
@@ -48,4 +69,4 @@ const getOrganizations = async (req, res) => {
   }
 };
 
-module.exports = { createOrganization, getOrganizations };
+module.exports = { createOrganization, getOrganizations, getRoles };
