@@ -9,6 +9,7 @@ const getPermissions = async (req, res) => {
       "organization"
     );
 
+    console.log("permission", profile);
     const { permissionMatrix } = profile.organization;
 
     const project = await Project.findById(projectId).populate({
@@ -20,6 +21,8 @@ const getPermissions = async (req, res) => {
       contributor =>
         contributor.profile.toString() === req.user.profile.toString()
     );
+
+    console.log("permissions: ", role);
     const { permissions } = permissionMatrix.find(item => item.role === role);
 
     return res.json({
@@ -64,7 +67,7 @@ const checkPermissions = permission => {
       }
       next();
     } catch (err) {
-      console.log(err);
+      console.log("check", err);
       return res.status(500).json({
         success: false,
         message: `Internal Server Error`
