@@ -14,9 +14,18 @@ TaskSchema.add({
     type: String,
     required: true
   },
+  comments: {
+    type: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "comment"
+      }
+    ],
+    default: []
+  },
   type: {
     type: String,
-    enum: ['BUG', 'FEATURE'],
+    enum: ["BUG", "FEATURE"],
     required: true
   },
   testCases: [
@@ -47,8 +56,8 @@ TaskSchema.add({
   completedOn: Date,
   status: {
     type: String,
-    enum: ['COMPLETE', 'PENDING', 'TESTING'],
-    default: 'PENDING'
+    enum: ["COMPLETE", "DEPLOYED", "TESTING", "INCOMPLETE"],
+    default: "INCOMPLETE"
   },
   priority: {
     type: Number,
