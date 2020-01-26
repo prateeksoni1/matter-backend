@@ -29,8 +29,7 @@ const addTaskController = async (req, res) => {
       testCases
     });
     await task.save();
-
-    project[`${type}s`].push(task._id);
+    project[`${type.toLowerCase()}s`].push(task._id);
     await project.save();
 
     return res.status(201).json({
