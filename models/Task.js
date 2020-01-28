@@ -16,7 +16,7 @@ TaskSchema.add({
   },
   type: {
     type: String,
-    enum: ['BUG', 'FEATURE'],
+    enum: ["BUG", "FEATURE"],
     required: true
   },
   testCases: [
@@ -47,8 +47,8 @@ TaskSchema.add({
   completedOn: Date,
   status: {
     type: String,
-    enum: ['COMPLETE', 'PENDING', 'TESTING'],
-    default: 'PENDING'
+    enum: ["COMPLETE", "TESTING", "DEPLOYED", "INCOMPLETE"],
+    default: "INCOMPLETE"
   },
   priority: {
     type: Number,
