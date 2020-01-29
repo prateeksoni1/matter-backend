@@ -38,10 +38,18 @@ const getPermissions = async (req, res) => {
   }
 };
 
-const checkPermissions = permission => {
-  return async (req, res, next) => {
-    const { projectId } = req.body;
+const checkPermissions = (req, res, next) => {
+    const { projectId, permission } = req.body;
+
+    if (!permission) {
+      return res.status(403).json({
+        success: false,
+        message: `User don't have enough permissions`
+      });
+    }
+
     try {
+
       const profile = await Profile.findById(req.user.profile).populate(
         "organization"
       );

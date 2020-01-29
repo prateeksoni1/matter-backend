@@ -16,14 +16,14 @@ router.post("/", checkAuthStatusController, createProjectController);
 router.post(
   "/task",
   checkAuthStatusController,
-  checkPermissions("create-task"),
+  checkPermissions,
   addTaskController
 );
 router.get("/tasks", checkAuthStatusController, getTasks);
 router.put(
   "/task/:id",
   checkAuthStatusController,
-  checkPermissions("edit-task"),
+  checkPermissions,
   editTaskController
 );
 router.get("/projects", checkAuthStatusController, getProjectByName);
