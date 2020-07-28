@@ -8,17 +8,17 @@ const getProfileByUsernameController = async (req, res) => {
     if (profile) {
       return res.json({
         success: true,
-        profile
+        profile,
       });
     }
 
     return res.json({
-      success: false
+      success: false,
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: err
+      error: err,
     });
   }
 };
@@ -32,8 +32,8 @@ const getProfilesController = async (req, res) => {
         $or: [
           { name: { $regex: search } },
           { username: { $regex: search } },
-          { email: { $regex: search } }
-        ]
+          { email: { $regex: search } },
+        ],
       });
     } else {
       profiles = await Profile.find();
@@ -41,12 +41,12 @@ const getProfilesController = async (req, res) => {
 
     return res.json({
       success: true,
-      profiles
+      profiles,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      success: false
+      success: false,
     });
   }
 };
@@ -54,41 +54,40 @@ const getProfilesController = async (req, res) => {
 const getProfileController = async (req, res) => {
   const profile = await Profile.findById(req.user.profile).populate({
     path: "projects",
-    populate: { path: "contributors", populate: "profile" }
+    populate: { path: "contributors", populate: "profile" },
   });
 
   if (!profile) {
     res.json({
       success: false,
       error: {
-        message: "No profile found"
-      }
+        message: "No profile found",
+      },
     });
   } else {
     res.json({
       success: true,
-      profile
+      profile,
     });
   }
 };
 
 const createProfileController = async (req, res) => {
-  const { name, email, username, isOwner, organization } = req.body;
+  const { name, username, isOwner, organization } = req.body;
   const profile = await Profile.findById(req.user.profile);
   if (profile) {
     return res.json({
       success: false,
       error: {
-        message: "Profile already exists"
-      }
+        message: "Profile already exists",
+      },
     });
   } else {
     const profileData = {
       name,
-      email,
       username,
       isOwner,
-      organization
+      organization,
     };
 
     const newProfile = new Profile(profileData);
@@ -98,7 +97,7 @@ const createProfileController = async (req, res) => {
     await user.save();
     res.status(201).json({
       success: true,
-      profile: newProfile
+      profile: newProfile,
     });
   }
 };
@@ -107,5 +106,5 @@ module.exports = {
   getProfileController,
   createProfileController,
   getProfileByUsernameController,
-  getProfilesController
+  getProfilesController,
 };

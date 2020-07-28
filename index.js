@@ -13,34 +13,34 @@ const {
   profileRouter,
   projectRouter,
   organizationRouter,
-  permissionsRouter
+  permissionsRouter,
 } = require("./routes");
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     cookie: {
-      secure: false
+      secure: false,
     },
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
   })
 );
 
-app.use(cors({ credentials: true }));
+app.use(cors({}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-rmfjp.mongodb.net/test?retryWrites=true&w=majority`,
-    { useUnifiedTopology: true, useNewUrlParser: true }
+    { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true }
   )
   .then(() => {
     console.log("DB connected");
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
   });
 
