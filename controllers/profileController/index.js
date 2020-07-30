@@ -74,7 +74,9 @@ const getProfileController = async (req, res) => {
 
 const createProfileController = async (req, res) => {
   const { name, username, isOwner, organization } = req.body;
-  const profile = await Profile.findById(req.user.profile);
+
+  const user = await User.findById(req.user.user);
+  const profile = await Profile.findById(user.profile);
   if (profile) {
     return res.json({
       success: false,
@@ -92,7 +94,6 @@ const createProfileController = async (req, res) => {
 
     const newProfile = new Profile(profileData);
     await newProfile.save();
-    const user = await User.findById(req.user._id);
     user.profile = newProfile._id;
     await user.save();
     res.status(201).json({
