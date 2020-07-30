@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const getAuthStatusController = async (req, res) => {
   if (req.user) {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.user);
+
     return res.status(200).json({
       success: true,
       user,
