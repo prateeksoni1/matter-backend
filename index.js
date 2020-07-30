@@ -3,10 +3,8 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-const passport = require("passport");
-const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
-require("./passport")(passport);
+const helmet = require("helmet");
+const morgan = require("morgan");
 
 const {
   authRouter,
@@ -16,21 +14,9 @@ const {
   permissionsRouter,
 } = require("./routes");
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    cookie: {
-      secure: false,
-    },
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-
-app.use(cors({}));
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(cors());
+app.use(helmet());
+app.use(morgan("common"));
 
 mongoose
   .connect(

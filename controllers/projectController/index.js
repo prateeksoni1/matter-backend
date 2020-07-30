@@ -1,4 +1,3 @@
-const firebase = require("../../firebase");
 const Project = require("../../models/Project");
 const Profile = require("../../models/Profile");
 const Contributor = require("../../models/ProjectContributor");
@@ -13,7 +12,7 @@ const addTaskController = async (req, res) => {
     assignedBy,
     priority,
     testCases,
-    projectId
+    projectId,
   } = req.body;
 
   try {
@@ -26,7 +25,7 @@ const addTaskController = async (req, res) => {
       assignedTo,
       assignedBy,
       priority,
-      testCases
+      testCases,
     });
     await task.save();
     project[`${type.toLowerCase()}s`].push(task._id);
@@ -34,13 +33,13 @@ const addTaskController = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      task
+      task,
     });
   } catch (err) {
     console.log(err);
     res.status(500).json({
       success: false,
-      error: err
+      error: err,
     });
   }
 };
@@ -53,12 +52,12 @@ const editTaskController = async (req, res) => {
     const task = await Task.updateOne({ _id: id }, req.body);
     return res.json({
       success: true,
-      task
+      task,
     });
   } catch (err) {
     return res.json({
       success: false,
-      error: err
+      error: err,
     });
   }
 };
@@ -70,28 +69,28 @@ const getTasks = async (req, res) => {
       path: `${type}s`,
       populate: [
         {
-          path: "testCases"
+          path: "testCases",
         },
         {
           path: "assignedTo",
-          populate: "profile"
+          populate: "profile",
         },
         {
           path: "assignedBy",
-          populate: "profile"
-        }
-      ]
+          populate: "profile",
+        },
+      ],
     });
     const tasks = project[`${type}s`];
     return res.json({
       success: true,
-      [`${type}s`]: tasks
+      [`${type}s`]: tasks,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
-      error: err
+      error: err,
     });
   }
 };
@@ -101,9 +100,9 @@ const createProjectController = async (req, res) => {
 
   try {
     const contributorIds = [];
-    contributors.forEach(contributor => {
+    contributors.forEach((contributor) => {
       const newContributor = new Contributor({
-        ...contributor
+        ...contributor,
       });
       newContributor.save();
       contributorIds.push(newContributor._id);
@@ -111,10 +110,10 @@ const createProjectController = async (req, res) => {
     const project = new Project({
       projectName,
       description,
-      contributors: contributorIds
+      contributors: contributorIds,
     });
     await project.save();
-    contributors.forEach(async contributor => {
+    contributors.forEach(async (contributor) => {
       const contributorProfile = await Profile.findById(contributor.profile);
       contributorProfile.projects.push(project._id);
       await contributorProfile.save();
@@ -122,12 +121,12 @@ const createProjectController = async (req, res) => {
 
     return res.json({
       success: true,
-      project
+      project,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      success: false
+      success: false,
     });
   }
 };
@@ -139,17 +138,17 @@ const getProjectsById = async (req, res) => {
       path: "projects",
       populate: {
         path: "contributors",
-        populate: "profile"
-      }
+        populate: "profile",
+      },
     });
     return res.json({
       success: true,
-      projects: profile.projects
+      projects: profile.projects,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      success: false
+      success: false,
     });
   }
 };
@@ -161,17 +160,17 @@ const getProjectByName = async (req, res) => {
     if (project) {
       return res.json({
         success: true,
-        project
+        project,
       });
     } else {
       return res.json({
-        success: false
+        success: false,
       });
     }
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: err
+      error: err,
     });
   }
 };
@@ -182,5 +181,5 @@ module.exports = {
   getProjectByName,
   addTaskController,
   getTasks,
-  editTaskController
+  editTaskController,
 };
