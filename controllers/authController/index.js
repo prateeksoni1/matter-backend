@@ -36,8 +36,6 @@ const checkAuthStatusController = async (req, res, next) => {
       });
     }
 
-    console.log(verifyToken);
-
     req.user = verifyToken;
 
     next();
@@ -78,7 +76,7 @@ const registerController = async (req, res) => {
 const loginController = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).populate("profile");
 
   if (!user) {
     return res.status(404).json({
@@ -87,15 +85,22 @@ const loginController = async (req, res, next) => {
     });
   }
 
-  const token = jwt.sign({ user: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
+  if (await bcrypt.compare(password, user.password)) {
+    const token = jwt.sign({ user: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
-  return res.status(200).json({
-    success: true,
-    user,
-    token,
-  });
+    return res.status(200).json({
+      success: true,
+      user,
+      token,
+    });
+  } else {
+    return res.status(403).json({
+      success: false,
+      message: "Invalid Email or password",
+    });
+  }
 };
 
 module.exports = {

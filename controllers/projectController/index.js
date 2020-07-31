@@ -120,6 +120,10 @@ const createProjectController = async (req, res) => {
       await contributorProfile.save();
     });
 
+    contributors.forEach(async (contributor) => {
+      const contributorProfile = await Profile.findById(contributor.profile);
+    });
+
     return res.json({
       success: true,
       project,
@@ -144,7 +148,6 @@ const getProjectsById = async (req, res) => {
         populate: "profile",
       },
     });
-    console.log(profile);
     return res.json({
       success: true,
       projects: profile.projects,
