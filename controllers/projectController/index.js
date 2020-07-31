@@ -2,6 +2,7 @@ const Project = require("../../models/Project");
 const Profile = require("../../models/Profile");
 const Contributor = require("../../models/ProjectContributor");
 const Task = require("../../models/Task");
+const User = require("../../models/User");
 
 const addTaskController = async (req, res) => {
   const {
@@ -132,15 +133,18 @@ const createProjectController = async (req, res) => {
 };
 
 const getProjectsById = async (req, res) => {
-  const { id } = req.params;
+  const { user: userId } = req.user;
   try {
-    const profile = await Profile.findById(id).populate({
+    const user = await User.findById(userId);
+
+    const profile = await Profile.findById(user.profile).populate({
       path: "projects",
       populate: {
         path: "contributors",
         populate: "profile",
       },
     });
+    console.log(profile);
     return res.json({
       success: true,
       projects: profile.projects,

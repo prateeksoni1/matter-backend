@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {
-  checkAuthStatusController
+  checkAuthStatusController,
 } = require("../../controllers/authController");
 const {
   createProjectController,
@@ -8,7 +8,7 @@ const {
   getProjectByName,
   getTasks,
   addTaskController,
-  editTaskController
+  editTaskController,
 } = require("../../controllers/projectController");
 const { checkPermissions } = require("../../controllers/permissionController");
 
@@ -27,6 +27,6 @@ router.put(
   editTaskController
 );
 router.get("/projects", checkAuthStatusController, getProjectByName);
-router.get("/:id", checkAuthStatusController, getProjectsById);
+router.get("/", checkAuthStatusController, getProjectsById);
 
 module.exports = router;
