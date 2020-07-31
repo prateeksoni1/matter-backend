@@ -26,20 +26,27 @@ const checkAuthStatusController = async (req, res, next) => {
     });
   }
 
-  const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+  try {
+    const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
 
-  if (!verifyToken) {
+    if (!verifyToken) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired token",
+      });
+    }
+
+    console.log(verifyToken);
+
+    req.user = verifyToken;
+
+    next();
+  } catch (err) {
     return res.status(401).json({
       success: false,
-      message: "Invalid or expired token",
+      message: "Invalid token",
     });
   }
-
-  console.log(verifyToken);
-
-  req.user = verifyToken;
-
-  next();
 };
 
 const registerController = async (req, res) => {
