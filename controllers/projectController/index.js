@@ -64,14 +64,15 @@ const editTaskController = async (req, res) => {
 };
 
 const getTasks = async (req, res) => {
-  const { projectId, type } = req.query;
+  let { projectId, type } = req.query;
+  type = type.toLowerCase();
   try {
     const project = await Project.findById(projectId).populate({
       path: `${type}s`,
       populate: [
-        {
-          path: "testCases",
-        },
+        // {
+        //   path: "testCases",
+        // },
         {
           path: "assignedTo",
           populate: "profile",
@@ -82,6 +83,7 @@ const getTasks = async (req, res) => {
         },
       ],
     });
+    console.log(project);
     const tasks = project[`${type}s`];
     return res.json({
       success: true,
