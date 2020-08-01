@@ -1,6 +1,7 @@
 const Profile = require("../../models/Profile");
 const Project = require("../../models/Project");
 const _ = require("lodash");
+const User = require("../../models/User");
 
 const getPermissions = async (req, res) => {
   const { projectId } = req.query;
@@ -45,7 +46,11 @@ const checkPermissions = async (req, res, next) => {
   }
 
   try {
-    const profile = await Profile.findById(req.user.profile).populate(
+    const { user: userId } = req.user;
+
+    const user = await User.findById(userId);
+
+    const profile = await Profile.findById(user.profile).populate(
       "organization"
     );
 
@@ -58,7 +63,7 @@ const checkPermissions = async (req, res, next) => {
     const { contributors } = project;
     const { role } = contributors.find(
       (contributor) =>
-        contributor.profile.toString() === req.user.profile.toString()
+        contributor.profile.toString() === user.profile.toString()
     );
     const { permissions } = permissionMatrix.find((item) => item.role === role);
 
@@ -70,6 +75,7 @@ const checkPermissions = async (req, res, next) => {
     }
     next();
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: `Internal Server Error`,
