@@ -22,7 +22,7 @@ router.post(
 );
 router.get("/task/:id", checkAuthStatusController, getTask);
 router.get("/tasks", checkAuthStatusController, getTasks);
-router.put(
+router.patch(
   "/task/:id",
   checkAuthStatusController,
   checkPermissions,

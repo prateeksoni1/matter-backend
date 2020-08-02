@@ -75,8 +75,6 @@ const addTaskController = async (req, res) => {
   }
 };
 
-const markTaskController = async (req, res) => {};
-
 const editTaskController = async (req, res) => {
   const { id } = req.params;
   try {
