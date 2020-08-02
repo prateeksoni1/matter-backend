@@ -18,6 +18,8 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("common"));
 
+// mongodb+srv://prateek:proisrealhitman@cluster0-rmfjp.mongodb.net/test?retryWrites=true&w=majority
+
 mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-rmfjp.mongodb.net/test?retryWrites=true&w=majority`,

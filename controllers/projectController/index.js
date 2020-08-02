@@ -65,6 +65,11 @@ const editTaskController = async (req, res) => {
 
 const getTasks = async (req, res) => {
   let { projectId, type } = req.query;
+
+  const { user: userId } = req.user;
+
+  const user = await User.findById(userId);
+
   type = type.toLowerCase();
   try {
     const project = await Project.findById(projectId).populate({
@@ -83,8 +88,19 @@ const getTasks = async (req, res) => {
         },
       ],
     });
-    console.log(project);
-    const tasks = project[`${type}s`];
+
+    let tasks = project[`${type}s`];
+
+    tasks = tasks.filter((task) => {
+      if (
+        task.assignedTo.find((ct) => {
+          return ct.profile._id.toString() === user.profile.toString();
+        })
+      ) {
+        return task;
+      }
+    });
+
     return res.json({
       success: true,
       [`${type}s`]: tasks,
