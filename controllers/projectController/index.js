@@ -4,6 +4,36 @@ const Contributor = require("../../models/ProjectContributor");
 const Task = require("../../models/Task");
 const User = require("../../models/User");
 
+const getTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const task = await Task.findById(id)
+      .populate({
+        path: "assignedTo",
+        populate: "profile",
+      })
+      .populate({
+        path: "assignedBy",
+        populate: "profile",
+      });
+
+    if (!task) {
+      return res.status(404).json({ success: false, message: "No task found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      task,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 const addTaskController = async (req, res) => {
   const {
     title,
@@ -207,4 +237,5 @@ module.exports = {
   addTaskController,
   getTasks,
   editTaskController,
+  getTask,
 };

@@ -9,6 +9,7 @@ const {
   getTasks,
   addTaskController,
   editTaskController,
+  getTask,
 } = require("../../controllers/projectController");
 const { checkPermissions } = require("../../controllers/permissionController");
 
@@ -19,6 +20,7 @@ router.post(
   checkPermissions,
   addTaskController
 );
+router.get("/task/:id", checkAuthStatusController, getTask);
 router.get("/tasks", checkAuthStatusController, getTasks);
 router.put(
   "/task/:id",
