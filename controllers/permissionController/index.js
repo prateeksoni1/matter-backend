@@ -5,8 +5,13 @@ const User = require("../../models/User");
 
 const getPermissions = async (req, res) => {
   const { projectId } = req.query;
+
+  const { user: userId } = req.user;
+
   try {
-    const profile = await Profile.findById(req.user.profile).populate(
+    const user = await User.findById(userId);
+
+    const profile = await Profile.findById(user.profile).populate(
       "organization"
     );
     const { permissionMatrix } = profile.organization;
@@ -18,7 +23,7 @@ const getPermissions = async (req, res) => {
     const { contributors } = project;
     const { role } = contributors.find(
       (contributor) =>
-        contributor.profile.toString() === req.user.profile.toString()
+        contributor.profile.toString() === user.profile.toString()
     );
     const { permissions } = permissionMatrix.find((item) => item.role === role);
 
